@@ -111,6 +111,24 @@ List = {
         return true
     end;
 
+    pop = function(self, index)
+        if not index or index == 0 then
+            index = 1
+        elseif index < 0 then
+            if index < self.size * -1 then return nil end -- TODO: raise index error
+            index = self.size + index + 1
+        end
+
+        local value = self[index]
+        for i=index, self.size do
+            self[i] = self[i+1]
+        end
+
+        self.size = self.size - 1
+        
+        return value
+    end;
+
     clear = function(self)
         for i=1, self.size do
             self[i] = nil
