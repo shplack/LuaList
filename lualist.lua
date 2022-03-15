@@ -12,25 +12,25 @@ List = {
                     self[self.size + i] = array[i]
                 end
                 self.size = self.size + array.size
+
+            elseif type(array) == 'table' then
+                local i = 0
+
+                for key, value in pairs(array) do
+                    i = i + 1
+                    list[i] = value
+                end
+                list.size = i
+
+            elseif type(array) == 'string' then
+                list.size = array:len()
+                for i=1, list.size do
+                    list[i] = array:sub(i, i)
+                end
+
+            else
+                return nil -- raise error
             end
-
-        elseif type(array) == 'table' then
-            local i = 0
-
-            for key, value in pairs(array) do
-                i = i + 1
-                list[i] = value
-            end
-            list.size = i
-
-        elseif type(array) == 'string' then
-            list.size = array:len()
-            for i=1, list.size do
-                list[i] = array:sub(i, i)
-            end
-
-        else
-            return nil -- raise error
         end
 
         return list
@@ -71,6 +71,51 @@ List = {
         end
 
         -- TODO: raise error
+    end;
+
+    insert = function(self, index, value)
+        if index == 0 then
+            index = 1
+        elseif index < 0 then -- backwards indexing
+            if index < self.size * -1 then return end -- TODO: raise index error
+            index = self.size + index + 1
+        elseif index > self.size + 1 then
+            return -- TODO: raise index error
+        end
+
+        for i=self.size, index, -1 do
+            self[i+1] = self[i]
+        end
+
+        self[index] = value
+        self.size = self.size + 1
+    end;
+
+    remove = function(self, value)
+        if not value then return false end -- TODO raise ValueError
+        local i = 1
+        while i <= self.size do
+            if self[i] == value then break end
+            i = i + 1
+        end
+
+        if i > self.size then return false end -- TODO raise ValueError
+
+        while i <= self.size do
+            self[i] = self[i+1]
+            i = i + 1
+        end
+
+        self.size = self.size - 1
+
+        return true
+    end;
+
+    clear = function(self)
+        for i=1, self.size do
+            self[i] = nil
+        end
+        self.size = 0
     end;
 
     equal = function(self, list)
