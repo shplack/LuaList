@@ -125,8 +125,25 @@ List = {
         end
 
         self.size = self.size - 1
-        
+
         return value
+    end;
+
+    count = function(self, value)
+        local count = 0
+        for i=1, self.size do
+            if getmetatable(value) == getmetatable(self) and getmetatable(value) == getmetatable(self[i]) then -- is List
+                if self[i]:equal(value) then
+                    count = count + 1
+                end
+            else
+                if self[i] == value then
+                    count = count + 1
+                end
+            end
+        end
+
+        return count
     end;
 
     clear = function(self)
