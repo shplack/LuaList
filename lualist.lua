@@ -129,6 +129,39 @@ List = {
         return value
     end;
 
+    clear = function(self)
+        for i=1, self.size do
+            self[i] = nil
+        end
+        self.size = 0
+    end;
+
+    index = function(self, value, start, stop)
+        if not start or start == 0 then start = 1 end
+        if start < 0 then
+            if start < self.size * -1 then return nil end -- TODO: raise index error
+            start = self.size + start + 1
+        end
+
+        stop = stop or self.size
+        if stop < 0 then
+            if stop < self.size * -1 then return nil end -- TODO: raise index error
+            stop = self.size + stop + 1
+        end
+
+        if stop < start then return nil end -- TODO: raise index error
+
+        for i=start, stop do
+            if getmetatable(self[i]) == getmetatable(self) then
+                if (self[i]:equal(value)) then return i end
+            elseif self[i] == value then
+                return i
+            end
+        end
+
+        return nil
+    end;
+
     count = function(self, value)
         local count = 0
         for i=1, self.size do
@@ -144,13 +177,6 @@ List = {
         end
 
         return count
-    end;
-
-    clear = function(self)
-        for i=1, self.size do
-            self[i] = nil
-        end
-        self.size = 0
     end;
 
     equal = function(self, list)
