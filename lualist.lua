@@ -194,6 +194,10 @@ List = {
         return List:new(self)
     end;
 
+    sort = function(self, sort_func)
+        -- TODO: sorter        
+    end;
+
     equal = function(self, list)
         if not list then return false end
         if getmetatable(self) ~= getmetatable(list) then return false end
@@ -204,17 +208,5 @@ List = {
         end
 
         return true
-    end;
-
-    print = function(self, format)
-        for i=1, self.size do
-            if type(format) == 'string' then
-                print(format:format(self[i]))
-            elseif type(format) == 'function' then
-                format({index=i, data=self[i]})
-            else
-                print(i, self[i])
-            end
-        end
-    end;
+    end
 }
