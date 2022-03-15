@@ -180,6 +180,20 @@ List = {
         return count
     end;
 
+    reverse = function(self)
+        local copy = self:copy()
+
+        self:clear()
+
+        while copy.size > 0 do
+            self:append(copy:pop())
+        end
+    end;
+
+    copy = function(self) -- shallow copy
+        return List:new(self)
+    end;
+
     equal = function(self, list)
         if not list then return false end
         if getmetatable(self) ~= getmetatable(list) then return false end
