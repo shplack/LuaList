@@ -1,6 +1,21 @@
 List = {
     size = 0;
 
+    __tostring = function(self)
+        local string = '['
+        
+        for i=1, self.size do
+            string = string .. self[i]
+            if i+1 <= self.size then
+                string = string .. ', '
+            end
+        end
+
+        string = string .. ']'
+
+        return string
+    end;
+
     new = function(self, array)
         local list = {}
         setmetatable(list, self)
