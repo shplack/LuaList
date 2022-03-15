@@ -112,7 +112,8 @@ List = {
     end;
 
     pop = function(self, index)
-        if not index or index == 0 then
+        index = index or self.size
+        if index == 0 then
             index = 1
         elseif index < 0 then
             if index < self.size * -1 then return nil end -- TODO: raise index error
